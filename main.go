@@ -5,11 +5,12 @@ import (
 	"log"
 )
 
-func main() {
-	// t := mustToken()
-	// token = flags.Get(token)
+const (
+	tgBotHost = "api.telegram.org"
+)
 
-	// tgClient = telegram.New(token)
+func main() {
+	//tgClient := telegram.New(tgBotHost, mustToken())
 
 	// fetcher = fetcher.New(tgClient)
 
@@ -21,7 +22,7 @@ func main() {
 
 func mustToken() string {
 	token := flag.String(
-		"token-bot-token",
+		"tg-bot-token",
 		"",
 		"token for access to telegram bot")
 
