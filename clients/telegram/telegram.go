@@ -60,7 +60,7 @@ func (c *Client) SendMessage(chatID int, text string) error {
 
 	_, err := c.doRequest(sendMessageMethod, q)
 	if err != nil {
-		return e.WrapIfErr("can't send message", err)
+		return e.Wrap("can't send message", err)
 	}
 	return nil
 }
@@ -76,14 +76,14 @@ func (c *Client) doRequest(method string, query url.Values) ([]byte, error) {
 
 	req, err := http.NewRequest(http.MethodGet, u.String(), nil)
 	if err != nil {
-		return nil, e.WrapIfErr(errMsg, err)
+		return nil, e.Wrap(errMsg, err)
 	}
 
 	req.URL.RawQuery = query.Encode()
 
 	resp, err := c.client.Do(req)
 	if err != nil {
-		return nil, e.WrapIfErr(errMsg, err)
+		return nil, e.Wrap(errMsg, err)
 	}
 
 	body, err := io.ReadAll(resp.Body)

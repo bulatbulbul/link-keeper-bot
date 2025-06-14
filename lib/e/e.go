@@ -2,7 +2,7 @@ package e
 
 import "fmt"
 
-func WrapIfErr(msg string, err error) error {
+func Wrap(msg string, err error) error {
 	if err == nil {
 		return nil
 	}
