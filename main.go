@@ -2,20 +2,36 @@ package main
 
 import (
 	"flag"
+	event_consumer "link-keeper-bot/consumer/event-consumer"
 	"log"
+
+	tgClient "link-keeper-bot/clients/telegram"
+	"link-keeper-bot/events/telegram"
+	"link-keeper-bot/storage/files"
 )
 
+/* ToDo
+Лучше константы убрать и сделать как mustToken()
+*/
+
 const (
-	tgBotHost = "api.telegram.org"
+	tgBotHost   = "api.telegram.org"
+	storagePath = "storage"
+	batchSize   = 100
 )
 
 func main() {
-	//tgClient := telegram.New(tgBotHost, mustToken())
+	eventsProcessor := telegram.New(
+		tgClient.New(tgBotHost, mustToken()),
+		files.New(storagePath),
+	)
 
-	// fetcher = fetcher.New(tgClient)
+	log.Print("service started")
 
-	// processor = processor.New(tgClient)
-
+	consumer := event_consumer.New(eventsProcessor, eventsProcessor, batchSize)
+	if err := consumer.Start(); err != nil {
+		log.Fatal("service is stopped", err)
+	}
 	// consumer.Start(fetcher, processor)
 
 }
