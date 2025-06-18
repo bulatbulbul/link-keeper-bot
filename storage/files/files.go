@@ -52,6 +52,7 @@ func (s Storage) Save(page *storage.Page) (err error) {
 	return nil
 }
 
+// ToDo
 func (s Storage) PickRandom(userName string) (page *storage.Page, err error) {
 	defer func() { err = e.Wrap("can't pick random page", err) }()
 

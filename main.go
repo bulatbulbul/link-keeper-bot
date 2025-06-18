@@ -2,21 +2,23 @@ package main
 
 import (
 	"flag"
-	event_consumer "link-keeper-bot/consumer/event-consumer"
+
 	"log"
 
 	tgClient "link-keeper-bot/clients/telegram"
+	"link-keeper-bot/consumer/event-consumer"
 	"link-keeper-bot/events/telegram"
 	"link-keeper-bot/storage/files"
 )
 
 /* ToDo
+Подключить бд
 Лучше константы убрать и сделать как mustToken()
 */
 
 const (
 	tgBotHost   = "api.telegram.org"
-	storagePath = "storage"
+	storagePath = "files_storage"
 	batchSize   = 100
 )
 
@@ -32,7 +34,6 @@ func main() {
 	if err := consumer.Start(); err != nil {
 		log.Fatal("service is stopped", err)
 	}
-	// consumer.Start(fetcher, processor)
 
 }
 
