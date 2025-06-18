@@ -1,14 +1,15 @@
 package main
 
 import (
+	"context"
 	"flag"
+	"link-keeper-bot/storage/sqlite"
 
 	"log"
 
 	tgClient "link-keeper-bot/clients/telegram"
 	"link-keeper-bot/consumer/event-consumer"
 	"link-keeper-bot/events/telegram"
-	"link-keeper-bot/storage/files"
 )
 
 /* ToDo
@@ -17,15 +18,25 @@ import (
 */
 
 const (
-	tgBotHost   = "api.telegram.org"
-	storagePath = "files_storage"
-	batchSize   = 100
+	tgBotHost         = "api.telegram.org"
+	sqliteStoragePath = "data/sqlite/storage.db"
+	batchSize         = 100
 )
 
 func main() {
+	//s := files.New(storagePath)
+	s, err := sqlite.New(sqliteStoragePath)
+	if err != nil {
+		log.Fatal("can't connect to storage: ", err)
+	}
+
+	if err := s.Init(context.TODO()); err != nil {
+		log.Fatal("can't init storage: ", err)
+	}
+
 	eventsProcessor := telegram.New(
 		tgClient.New(tgBotHost, mustToken()),
-		files.New(storagePath),
+		s,
 	)
 
 	log.Print("service started")
